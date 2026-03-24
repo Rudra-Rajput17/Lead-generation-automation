@@ -1,0 +1,146 @@
+{
+  "name": "03- Outreach + Followup",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "appCobtpQMWc4FgFC",
+          "mode": "list",
+          "cachedResultName": "Marketing Agency CRM",
+          "cachedResultUrl": "https://airtable.com/appCobtpQMWc4FgFC"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblKugH5OdbJCp4mL",
+          "mode": "list",
+          "cachedResultName": "Table 2",
+          "cachedResultUrl": "https://airtable.com/appCobtpQMWc4FgFC/tblKugH5OdbJCp4mL"
+        },
+        "filterByFormula": "{email} = \"rrudra3404@gmail.com\"",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        192,
+        0
+      ],
+      "id": "556f3549-3ead-4683-8ecb-b15f40d28744",
+      "name": "Search records",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "hrJeof08mqBrKfVO",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 10
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -64,
+        0
+      ],
+      "id": "dd966464-e35c-4690-a783-1da2eacd1aeb",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"outreach_message\": \"Hi {{$json.full_name}},\\n\\nI came across your profile and noticed your role as {{$json.job_title}} at {{$json.company}} — impressive work.\\n\\nWe’re currently helping companies like yours increase their lead generation by 3–5x using AI-driven automation.\\n\\nI’ve created a quick interactive demo for you 👇\\n\\n🚀 Try it here:\\nhttp://localhost:5678/webhook/lead-chat\\n\\nLooking forward to your thoughts.\\n\\nBest regards,\\nAutomation Testing\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        400,
+        0
+      ],
+      "id": "2bf75d46-431f-4436-b539-70d1a80da1c7",
+      "name": "outreach text"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Search records').item.json.email }}",
+        "subject": "Quick idea to increase your leads 🚀",
+        "message": "=<p>Hi {{$json.full_name}},</p>\n\n<p>\nI came across your profile and noticed your role as \n<strong>{{$json.job_title}}</strong> at \n<strong>{{$json.company}}</strong> — impressive work.\n</p>\n\n<p>\nWe’re helping companies like yours increase lead generation by <strong>3–5x</strong> using AI automation.\n</p>\n\n<p>\nI’ve created a quick interactive demo for you 👇\n</p>\n\n<p style=\"text-align:center;\">\n  <a href=\"http://localhost:5678/webhook/56a4118c-5629-47bb-9afc-4ffff108337c/chat\"\n     style=\"\n       background-color:#2563eb;\n       color:white;\n       padding:12px 20px;\n       text-decoration:none;\n       border-radius:8px;\n       display:inline-block;\n       font-weight:bold;\">\n    🚀 Try AI Demo\n  </a>\n</p>\n\n<p>\nThis will open a smart assistant that:\n</p>\n\n<ul>\n<li>Understands your current lead generation</li>\n<li>Suggests improvements</li>\n<li>Shows how you can scale using AI</li>\n</ul>\n\n<p>\nLooking forward to your thoughts.\n</p>\n\n<p>\nBest regards,<br>\nRudra\n</p>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        608,
+        0
+      ],
+      "id": "f5075c54-cce7-417d-8001-414fdbaf9ef2",
+      "name": "Send a message",
+      "webhookId": "144fc71f-6c17-4b9e-a60b-2a5232862677",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "XMz8OuGbrxvp3kBy",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Search records",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search records": {
+      "main": [
+        [
+          {
+            "node": "outreach text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "outreach text": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "c807442c-f73b-43f3-bb67-5131e51e3db1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7481286cd80ed07607f45651ccf8a21ce0a424f97d57f473a242793aeafbabe4"
+  },
+  "id": "uH2CqCuztBmhgRSY",
+  "tags": []
+}
